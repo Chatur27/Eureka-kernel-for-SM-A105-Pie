@@ -680,6 +680,9 @@ asmlinkage int __exception do_debug_exception(unsigned long addr,
 	const struct fault_info *inf = debug_fault_info + DBG_ESR_EVT(esr);
 	struct siginfo info;
 
+	if (user_mode(regs) && instruction_pointer(regs) > TASK_SIZE)
+		arm64_apply_bp_hardening();
+
 	if (!inf->fn(addr, esr, regs))
 		return 1;
 
