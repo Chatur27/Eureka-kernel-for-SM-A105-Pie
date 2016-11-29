@@ -2512,6 +2512,7 @@ static int xfrm_user_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
 		IP_INC_STATS(net, IPSTATS_MIB_COMPATXFRM);
 	}
 #endif
+		return -EOPNOTSUPP;
 #endif
 
 	type = nlh->nlmsg_type;
