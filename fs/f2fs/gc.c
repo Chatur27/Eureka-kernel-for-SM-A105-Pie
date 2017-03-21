@@ -600,7 +600,7 @@ static bool is_alive(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
 		f2fs_put_page(node_page, 1);
 		return false;
 	}
-
+	
 	if (sum->version != dni->version) {
 		f2fs_msg(sbi->sb, KERN_WARNING,
 				"%s: valid data with mismatched node version.",
