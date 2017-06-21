@@ -11,6 +11,7 @@ else
         KBUILD_DEFCONFIG := $(ARCH)_defconfig
 endif
 
+
 # For gcc stack alignment is specified with -mpreferred-stack-boundary,
 # clang has the option -mstack-alignment for that purpose.
 ifneq ($(call cc-option, -mpreferred-stack-boundary=4),)
