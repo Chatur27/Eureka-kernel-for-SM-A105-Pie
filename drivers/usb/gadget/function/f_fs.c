@@ -3242,6 +3242,7 @@ static int ffs_func_setup(struct usb_function *f,
 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
 
+<<<<<<< HEAD
 	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
 }
 
