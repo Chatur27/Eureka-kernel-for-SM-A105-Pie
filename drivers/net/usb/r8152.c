@@ -5716,6 +5716,9 @@ static int rtl8152_close(struct net_device *netdev)
 	int res = 0;
 	int timeleft = -1;
 
+#ifdef CONFIG_PM_SLEEP
+	unregister_pm_notifier(&tp->pm_notifier);
+#endif
 	clear_bit(WORK_ENABLE, &tp->flags);
 	usb_kill_urb(tp->intr_urb);
 	cancel_delayed_work_sync(&tp->schedule);
