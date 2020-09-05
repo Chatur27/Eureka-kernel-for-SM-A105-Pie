@@ -32,3 +32,6 @@ obj-$(CONFIG_CRYPTO_DEV_SUN4I_SS) += sunxi-ss/
 ifneq (,$(filter $(CONFIG_EXYNOS_SMU) $(CONFIG_EXYNOS_FMP),y))
 obj-y += fmp/
 endif
+
+# Squeeze a little bit more juice from GCC
+ccflags-y := -O3
