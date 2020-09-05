@@ -1,11 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0
-dts-dirs += exynos
+dtb-y += exynos/exynos7885.dtb
 
-subdir-y          := $(dts-dirs)
+dtb-$(CONFIG_MACH_EXYNOS7885_A10_OPEN) := \
+	exynos/exynos7884B-a10_eur_open_00.dtbo \
+	exynos/exynos7884B-a10_eur_open_01.dtbo \
+	exynos/exynos7884B-a10_kor_open_00.dtbo \
+	exynos/exynos7884B-a10_kor_open_03.dtbo \
+	exynos/exynos7884B-a10_kor_open_05.dtbo \
+	exynos/exynos7884B-a10_swa_open_00.dtbo
 
-always            := $(DTB_LIST)
-
-targets += dtbs
-dtbs: $(addprefix $(obj)/, $(DTB_LIST))
-
-clean-files       := exynos/*.dtb *.dtb*
+always         := $(dtb-y) $(dtbo-y)
+clean-files    := *.dtb *.dtbo
