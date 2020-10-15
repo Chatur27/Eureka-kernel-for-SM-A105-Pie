@@ -708,6 +708,9 @@ struct r8152 {
 	struct delayed_work schedule, hw_phy_work;
 	struct mii_if_info mii;
 	struct mutex control;	/* use for hw setting */
+#ifdef CONFIG_PM_SLEEP
+	struct notifier_block pm_notifier;
+#endif
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 0, 0)
 	struct vlan_group *vlgrp;
 #endif
@@ -5617,6 +5620,33 @@ static inline void __rtl_hw_phy_work_func(struct r8152 *tp)
 	usb_autopm_put_interface(tp->intf);
 }
 
+#ifdef CONFIG_PM_SLEEP
+static int rtl_notifier(struct notifier_block *nb, unsigned long action,
+			void *data)
+{
+	struct r8152 *tp = container_of(nb, struct r8152, pm_notifier);
+
+	switch (action) {
+	case PM_HIBERNATION_PREPARE:
+	case PM_SUSPEND_PREPARE:
+		usb_autopm_get_interface(tp->intf);
+		break;
+
+	case PM_POST_HIBERNATION:
+	case PM_POST_SUSPEND:
+		usb_autopm_put_interface(tp->intf);
+		break;
+
+	case PM_POST_RESTORE:
+	case PM_RESTORE_PREPARE:
+	default:
+		break;
+	}
+
+	return NOTIFY_DONE;
+}
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 20)
 
 static void rtl_work_func_t(void *data)
@@ -5704,6 +5734,10 @@ static int rtl8152_open(struct net_device *netdev)
 	mutex_unlock(&tp->control);
 
 	usb_autopm_put_interface(tp->intf);
+#ifdef CONFIG_PM_SLEEP
+	tp->pm_notifier.notifier_call = rtl_notifier;
+	register_pm_notifier(&tp->pm_notifier);
+#endif
 
 out:
 	pr_info("%s : end of function!\n", __func__);
