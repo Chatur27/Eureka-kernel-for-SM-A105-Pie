@@ -2249,7 +2249,6 @@ out:
 	return error;
 }
 
-<<<<<<< HEAD
 static int prctl_set_vma_anon_name(unsigned long start, unsigned long end,
 			unsigned long arg)
 {
