@@ -72,7 +72,32 @@ static int ect_parse_dvfs_domain(int parser_version, void *address, struct ect_d
 
 	ect_parse_integer(&address, &domain->max_frequency);
 	ect_parse_integer(&address, &domain->min_frequency);
-
+	
+	if (domain->max_frequency == 2184000) //for big cores
+		domain->max_frequency = 2184000;
+	else if (domain->max_frequency == 2080000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1976000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1872000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1794000) //for little cores
+		domain->max_frequency = 1794000;
+	else if (domain->max_frequency == 1768000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1690000) //for little cores
+		domain->max_frequency = 1690000;
+	else if (domain->max_frequency == 1664000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1586000) //for little cores
+		domain->max_frequency = 1690000;
+	else if (domain->max_frequency == 1560000) //for big cores
+		domain->max_frequency = 2080000;
+	else if (domain->max_frequency == 1482000) //for little cores
+		domain->max_frequency = 1690000;
+	else if (domain->max_frequency == 1352000) //for little cores but conflicts with big cores' frequency
+		domain->max_frequency = 1690000;
+	
 	if (parser_version >= 2) {
 		ect_parse_integer(&address, &domain->boot_level_idx);
 		ect_parse_integer(&address, &domain->resume_level_idx);
@@ -582,8 +607,12 @@ static int ect_parse_ap_thermal_function(int parser_version, void *address, stru
 			range->max_frequency = 2080000;
 		else if (range->max_frequency == 1482000) //for little cores
 			range->max_frequency = 1690000;
-		/* else if (range->max_frequency == 1352000) //for little cores but conflicts with big cores' frequency
-			range->max_frequency = 1690000; */
+		else if (range->max_frequency == 1352000) //for little cores but conflicts with big cores' frequency
+			range->max_frequency = 1690000;
+		else if (range->max_frequency == 1144000) //for little cores
+			range->max_frequency = 1690000;
+		else if (range->max_frequency == 728000) //for big cores
+			range->max_frequency = 2080000;
 		
 		ect_parse_integer(&address, &range->sw_trip);
 		ect_parse_integer(&address, &range->flag);
