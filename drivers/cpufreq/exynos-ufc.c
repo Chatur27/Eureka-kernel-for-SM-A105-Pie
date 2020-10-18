@@ -36,7 +36,7 @@ static int last_max_limit = -1;
 static int sse_mode;
 
 static ssize_t show_cpufreq_table(struct kobject *kobj,
-				struct attribute *attr, char *buf)
+				struct kobj_attribute *attr, char *buf)
 {
 	struct list_head *domains = get_domain_list();
 	struct exynos_cpufreq_domain *domain;
@@ -66,7 +66,7 @@ static ssize_t show_cpufreq_table(struct kobject *kobj,
 }
 
 static ssize_t show_cpufreq_min_limit(struct kobject *kobj,
-				struct attribute *attr, char *buf)
+				struct kobj_attribute *attr, char *buf)
 {
 	struct list_head *domains = get_domain_list();
 	struct exynos_cpufreq_domain *domain;
@@ -143,7 +143,7 @@ static inline void control_hmp_boost(bool enable) {}
 #endif
 
 static ssize_t store_cpufreq_min_limit(struct kobject *kobj,
-				struct attribute *attr, const char *buf,
+				struct kobj_attribute *attr, const char *buf,
 				size_t count)
 {
 	struct list_head *domains = get_domain_list();
@@ -265,7 +265,7 @@ static ssize_t store_cpufreq_min_limit(struct kobject *kobj,
 }
 
 static ssize_t store_cpufreq_min_limit_wo_boost(struct kobject *kobj,
-				struct attribute *attr, const char *buf,
+				struct kobj_attribute *attr, const char *buf,
 				size_t count)
 {
 	struct list_head *domains = get_domain_list();
@@ -378,7 +378,7 @@ static ssize_t store_cpufreq_min_limit_wo_boost(struct kobject *kobj,
 }
 
 static ssize_t show_cpufreq_max_limit(struct kobject *kobj,
-				struct attribute *attr, char *buf)
+				struct kobj_attribute *attr, char *buf)
 {
 	struct list_head *domains = get_domain_list();
 	struct exynos_cpufreq_domain *domain;
@@ -545,7 +545,8 @@ static void cpufreq_max_limit_update(int input_freq)
 	}
 }
 
-static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct attribute *attr,
+
+static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct kobj_attribute *attr,
 					const char *buf, size_t count)
 {
 	int input;
@@ -560,12 +561,12 @@ static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct attribute *a
 }
 
 static ssize_t show_execution_mode_change(struct kobject *kobj,
-				struct attribute *attr, char *buf)
+				struct kobj_attribute *attr, char *buf)
 {
 	return snprintf(buf, 10, "%d\n", sse_mode);
 }
 
-static ssize_t store_execution_mode_change(struct kobject *kobj, struct attribute *attr,
+static ssize_t store_execution_mode_change(struct kobject *kobj, struct kobj_attribute *attr,
 					const char *buf, size_t count)
 {
 	int input;
@@ -585,18 +586,18 @@ static ssize_t store_execution_mode_change(struct kobject *kobj, struct attribut
 	return count;
 }
 
-static struct global_attr cpufreq_table =
+static struct kobj_attribute cpufreq_table =
 __ATTR(cpufreq_table, 0444, show_cpufreq_table, NULL);
-static struct global_attr cpufreq_min_limit =
+static struct kobj_attribute cpufreq_min_limit =
 __ATTR(cpufreq_min_limit, 0644,
 		show_cpufreq_min_limit, store_cpufreq_min_limit);
-static struct global_attr cpufreq_min_limit_wo_boost =
+static struct kobj_attribute cpufreq_min_limit_wo_boost =
 __ATTR(cpufreq_min_limit_wo_boost, 0644,
 		show_cpufreq_min_limit, store_cpufreq_min_limit_wo_boost);
-static struct global_attr cpufreq_max_limit =
+static struct kobj_attribute cpufreq_max_limit =
 __ATTR(cpufreq_max_limit, 0644,
 		show_cpufreq_max_limit, store_cpufreq_max_limit);
-static struct global_attr execution_mode_change =
+static struct kobj_attribute execution_mode_change =
 __ATTR(execution_mode_change, 0644,
 		show_execution_mode_change, store_execution_mode_change);
 
