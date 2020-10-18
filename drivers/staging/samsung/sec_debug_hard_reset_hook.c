@@ -39,6 +39,11 @@ static struct hrtimer hard_reset_hook_timer;
 static bool hard_reset_occurred;
 static int all_pressed;
 
+int hard_reset_key_pressed = 0;
+
+struct super_block *keypress_callback_sb = NULL;
+int (*keypress_callback_fn)(struct super_block *sb) = NULL;
+
 static bool is_hard_reset_key(unsigned int code)
 {
 	int i;
@@ -123,6 +128,7 @@ static bool is_gpio_keys_all_pressed(void)
 static enum hrtimer_restart hard_reset_hook_callback(struct hrtimer *hrtimer)
 {
 	if (!is_gpio_keys_all_pressed()) {
+		hard_reset_key_pressed = 0;
 		pr_warn("All gpio keys are not pressed\n");
 		return HRTIMER_NORESTART;
 	}
@@ -182,11 +188,14 @@ static int hard_reset_hook(struct notifier_block *nb,
 	else
 		hard_reset_key_unset(code);
 
-	if (hard_reset_key_all_pressed())
+	if (hard_reset_key_all_pressed()) {
+		hard_reset_key_pressed = 1;
 		hrtimer_start(&hard_reset_hook_timer,
 			      hold_time, HRTIMER_MODE_REL);
-	else
+	} else {
 		hrtimer_cancel(&hard_reset_hook_timer);
+		hard_reset_key_pressed = 0;
+	}
 
 	return NOTIFY_OK;
 }
