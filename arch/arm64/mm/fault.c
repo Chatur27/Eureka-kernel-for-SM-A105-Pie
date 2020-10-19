@@ -682,9 +682,6 @@ asmlinkage int __exception do_debug_exception(unsigned long addr_if_watchpoint,
 	struct siginfo info;
 	int rv;
 
-	if (user_mode(regs) && instruction_pointer(regs) > TASK_SIZE)
-		arm64_apply_bp_hardening();
-
 	/*
 	 * Tell lockdep we disabled irqs in entry.S. Do nothing if they were
 	 * already disabled to preserve the last enabled/disabled addresses.
