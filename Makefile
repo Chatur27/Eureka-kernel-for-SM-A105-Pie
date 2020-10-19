@@ -666,9 +666,6 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os
 else
-ifdef CONFIG_PROFILE_ALL_BRANCHES
-KBUILD_CFLAGS += -O2 -mtune=cortex-a73.cortex-a53 -mcpu=cortex-a73.cortex-a53
-else
 KBUILD_CFLAGS   += -O3
 endif
 
