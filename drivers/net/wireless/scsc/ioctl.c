@@ -1422,7 +1422,7 @@ static ssize_t slsi_reassoc_write(struct net_device *dev, char *command, int buf
 	u8                  bssid[6] = { 0 };
 	int                 channel;
 	int                 freq;
-	enum ieee80211_band band = IEEE80211_BAND_2GHZ;
+	enum nl80211_band  band = NL80211_BAND_2GHZ;
 	int                 r = 0;
 
 	if (command[17] != ' ') {
@@ -1440,7 +1440,7 @@ static ssize_t slsi_reassoc_write(struct net_device *dev, char *command, int buf
 	}
 
 	if (channel > 14)
-		band = IEEE80211_BAND_5GHZ;
+		band = NL80211_BAND_5GHZ;
 	freq = (u16)ieee80211_channel_to_frequency(channel, band);
 
 	ndev_vif = netdev_priv(dev);
